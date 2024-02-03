@@ -8,6 +8,10 @@ import pl.edu.agh.mwo.invoice.product.Product;
 public class Invoice {
     private Collection<Product> products;
 
+    protected Invoice(){
+
+    }
+
     public void addProduct(Product product) {
         // TODO: implement
     }
