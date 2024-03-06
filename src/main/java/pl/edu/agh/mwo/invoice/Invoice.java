@@ -15,10 +15,12 @@ public class Invoice {
     }
 
     public void addProduct(Product product) {
+        if(product==null)throw new IllegalArgumentException("quantity must be not null, not empty");
         products.add(product);
     }
 
     public void addProduct(Product product, Integer quantity) {
+        if(product.getName()==null|product.getName()==""|quantity==null|quantity<=0)throw new IllegalArgumentException("quantity must be not null, not empty");
         for(int i=0;i<quantity;i++){
             products.add(product);
         }
@@ -27,7 +29,7 @@ public class Invoice {
     public BigDecimal getSubtotal() {
         BigDecimal sum= new BigDecimal("0");
         for(Product next: products){
-           sum = sum.add(new BigDecimal("10"));
+           sum = sum.add(next.getPrice());
         }
         if(products.isEmpty())return BigDecimal.ZERO;
         return sum;
@@ -36,10 +38,15 @@ public class Invoice {
     }
 
     public BigDecimal getTax() {
-        return BigDecimal.ZERO;
+        BigDecimal sum= new BigDecimal("0");
+        for(Product next: products){
+            sum = sum.add(next.getPrice().multiply(next.getTaxPercent()));
+        }
+        if(products.isEmpty())return BigDecimal.ZERO;
+        return sum;
     }
 
     public BigDecimal getTotal() {
-        return BigDecimal.ZERO;
+        return getSubtotal().add(getTax());
     }
 }
